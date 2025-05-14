@@ -5,7 +5,7 @@ This workspace contains the `servo_serial_bridge_cpp` ROS package, which provide
 ## Package: servo_serial_bridge_cpp
 
 ### Description
-This package subscribes to a ROS topic (`/servo`) of type `std_msgs/UInt16` and sends the received values as formatted serial commands to a specified serial port. The intended use is to control a servo motor via a microcontroller that interprets the serial commands.
+This package subscribes to a ROS topic (`/sroi_gripper/command`) of type `std_msgs/UInt16` and sends the received values as formatted serial commands to a specified serial port. The intended use is to control a servo motor via a microcontroller that interprets the serial commands.
 
 ### Dependencies
 - ROS (tested with Kinetic/Melodic/Noetic)
@@ -13,13 +13,36 @@ This package subscribes to a ROS topic (`/servo`) of type `std_msgs/UInt16` and 
 - `std_msgs`
 - `boost`
 
-### Node: `servo_serial_bridge_cpp_node`
+### Node: `serial_bridge_node`
 
 #### Parameters
 - `~port` (string, default: `/dev/ttyUSB1`): The serial port to which the servo controller is connected.
+- `~baud_rate` (int, default: 115200): The baud rate for serial communication.
 
 #### Subscribed Topics
-- `/servo` (`std_msgs/UInt16`): The desired servo position (0-999). Each message is sent as a formatted string (e.g., `S:123\n`) over the serial port.
+- `/sroi_gripper/command` (`std_msgs/UInt16`): The desired servo position (0-180 degrees). Each message is sent as a formatted command over the serial port.
+
+#### Published Topics
+- `/sroi_gripper/state` (`std_msgs/UInt16`): The current state/position of the servo.
+
+### Launch Files
+The package includes a launch file for easy startup:
+```bash
+roslaunch servo_serial_bridge_cpp servo_bridge.launch
+```
+
+### Test Scripts
+
+#### test_gripper.py
+A Python script located in `src/servo_serial_bridge_cpp/scripts/test_gripper.py` that tests the servo response by publishing commands at 50Hz. The script creates a smooth transition from 0 to 90 degrees over 5 seconds.
+
+Usage:
+```bash
+# Make the script executable first
+chmod +x src/servo_serial_bridge_cpp/scripts/test_gripper.py
+# Run the test
+rosrun servo_serial_bridge_cpp test_gripper.py
+```
 
 ### Usage Example
 1. Build the workspace:
@@ -30,13 +53,17 @@ This package subscribes to a ROS topic (`/servo`) of type `std_msgs/UInt16` and 
    ```bash
    source devel/setup.bash
    ```
-3. Run the node:
+3. Run the node (either using launch file or directly):
    ```bash
-   rosrun servo_serial_bridge_cpp servo_serial_bridge_cpp_node _port:=/dev/ttyUSB1
+   # Using launch file (recommended)
+   roslaunch servo_serial_bridge_cpp servo_bridge.launch
+   
+   # Or run node directly
+   rosrun servo_serial_bridge_cpp serial_bridge_node _port:=/dev/ttyUSB1 _baud_rate:=115200
    ```
 4. Publish a servo command:
    ```bash
-   rostopic pub /servo std_msgs/UInt16 "data: 150"
+   rostopic pub /sroi_gripper/command std_msgs/UInt16 "data: 90"
    ```
 
 ### Maintainer
@@ -47,4 +74,4 @@ This package subscribes to a ROS topic (`/servo`) of type `std_msgs/UInt16` and 
 
 ---
 
-For more details, see the source code in `src/servo_serial_bridge_cpp/src/servo_serial_bridge_cpp.cpp` and the package manifest in `src/servo_serial_bridge_cpp/package.xml`.
+For more details, see the source code in `src/servo_serial_bridge_cpp/src/serial_bridge.cpp` and the package manifest in `src/servo_serial_bridge_cpp/package.xml`.
