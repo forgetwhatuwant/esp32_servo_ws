@@ -1,4 +1,3 @@
-
 cmake_minimum_required(VERSION 3.0.2)
 project(servo_serial_bridge_cpp)
 
@@ -118,15 +117,15 @@ include_directories(
   ${Boost_INCLUDE_DIRS}
 )
 
-add_executable(servo_serial_bridge_cpp_node src/servo_serial_bridge_cpp.cpp)
-target_link_libraries(servo_serial_bridge_cpp_node
+add_executable(serial_bridge_node src/serial_bridge.cpp)
+target_link_libraries(serial_bridge_node
   ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}        # Links in Boost.System and any other Boost libs found :contentReference[oaicite:2]{index=2}
 )
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/servo_serial_bridge_cpp.cpp
+#   src/${PROJECT_NAME}/serial_bridge.cpp
 # )
 
 ## Add cmake target dependencies of the library
@@ -137,7 +136,7 @@ target_link_libraries(servo_serial_bridge_cpp_node
 ## Declare a C++ executable
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
-# add_executable(${PROJECT_NAME}_node src/servo_serial_bridge_cpp_node.cpp)
+# add_executable(${PROJECT_NAME}_node src/serial_bridge_node.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -201,7 +200,7 @@ target_link_libraries(servo_serial_bridge_cpp_node
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_servo_serial_bridge_cpp.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_serial_bridge.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
