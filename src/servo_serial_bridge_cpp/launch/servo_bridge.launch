@@ -2,7 +2,7 @@
 <launch>
     <node pkg="servo_serial_bridge_cpp" type="serial_bridge_node" name="serial_bridge_node" output="screen">
         <!-- Serial port configuration -->
-        <param name="port" value="/dev/ttyACM0" />
+        <param name="port" value="/dev/ttyUSB1" />
         <param name="baud_rate" value="115200" />
     </node>
 </launch> 
